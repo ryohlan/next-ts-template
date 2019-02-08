@@ -5,7 +5,9 @@ const pathPattern = require('../router/pattern.json')
 const originalPath = process.argv[2].replace(/\/$/, '')
 const splited = originalPath.split('/')
 if (splited[splited.length - 1].startsWith(':')) {
-  splited.push('show')
+  splited.push('show.tsx')
+} else {
+  splited.push('index.tsx')
 }
 
 const pathStr = splited.filter(s => !s.startsWith(':')).join('/')
@@ -33,17 +35,18 @@ const CONTROLLER_TEMPLATE_PATH = path.resolve(
 
 function checkExists(filePath: string) {
   try {
-    fs.statSync(path.resolve(filePath, 'index.tsx'))
-    console.error(`ERROR!! ${filePath}/index.tsx already exists.`)
+    fs.statSync(path.resolve(filePath))
+    console.error(`ERROR!! ${filePath} already exists.`)
     process.exit()
   } catch {}
 }
 
 function checkDir(filePath: string) {
+  const dirPath = filePath.replace(/\/\w*\.tsx$/, '')
   try {
-    fs.statSync(filePath)
+    fs.statSync(dirPath)
   } catch (e) {
-    fs.mkdirSync(filePath)
+    fs.mkdirSync(dirPath, { recursive: true })
   }
 }
 
@@ -54,13 +57,13 @@ function createNewFileFromTemplate(
 ) {
   const data = fs
     .readFileSync(templatePath, 'utf8')
-    .replace(/__PATH__/g, filePath)
+    .replace(/__PATH__/g, filePath.replace(/(\/index|\.tsx)/g, ''))
     .replace(/__QUERY_TYPES__/g, queryTypeStr)
-  fs.writeFileSync(path.resolve(rootPath, filePath, 'index.tsx'), data)
+  fs.writeFileSync(path.resolve(rootPath, filePath), data)
 }
 
 function createNewPage() {
-  console.group('creat new page')
+  console.group('create new page')
 
   const pagePath = path.resolve(PAGE_ROOT_PATH, pathStr)
   console.log('path: ' + pagePath)
@@ -72,7 +75,7 @@ function createNewPage() {
 }
 
 function createNewController() {
-  console.group('creat new controller')
+  console.group('create new controller')
 
   const pagePath = path.resolve(CONTROLLER_ROOT_PATH, pathStr)
   console.log('path: ' + pagePath)
@@ -89,7 +92,7 @@ function createNewController() {
 }
 
 function createNewLayout() {
-  console.group('creat new layout')
+  console.group('create new layout')
 
   const pagePath = path.resolve(LAYOUT_ROOT_PATH, pathStr)
   console.log('path: ' + pagePath)
@@ -101,15 +104,19 @@ function createNewLayout() {
   console.groupEnd()
 }
 
-function addRoutes(name: string, page: string, pattern: string) {
-  console.group('creat new routes')
+function addRoutes(pathStr: string, pattern: string) {
+  console.group('create new routes')
+  const name = pathStr
+    .replace(/(\/index|\.tsx)/g, '')
+    .split('/')
+    .join('_')
   if (!!pathPattern.patterns.find((p: any) => p.name === name)) {
     console.error(`ERROR. routes\'name \"${name}\" already exists.`)
     process.exit()
   }
   const newRoute = {
     name,
-    page,
+    page: pathStr.replace('.tsx', ''),
     pattern: `/${pattern}`
   }
   pathPattern.patterns.push(newRoute)
@@ -130,9 +137,4 @@ checkDir(LAYOUT_ROOT_PATH)
 createNewPage()
 createNewController()
 createNewLayout()
-const routeNamePathSplited = pathStr.split('/').slice(-2)
-const routeName =
-  routeNamePathSplited[routeNamePathSplited.length - 1] === 'show'
-    ? routeNamePathSplited.join('_')
-    : routeNamePathSplited[routeNamePathSplited.length - 1]
-addRoutes(routeName, pathStr, originalPath)
+addRoutes(pathStr, originalPath)
