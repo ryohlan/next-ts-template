@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "rm -rf ./node_modules/.cache dist && nodemon",
+    "add:page": "ts-node cli/generate_new_page.ts"
   },
   "keywords": [],
   "author": "",

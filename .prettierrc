@@ -1,0 +1,11 @@
+singleQuote: true
+semi: false
+parser: typescript
+overrides: [
+  {
+    files: '*.json',
+    options: {
+      parser: 'json'
+    }
+  }
+]

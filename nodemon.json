@@ -1,0 +1,4 @@
+{
+  "watch": ["server.ts", "static/", "router/"],
+  "exec": "rm -rf ./node_modules/.cache && npx tsc -p ./tsconfig.server.json && node dist/server.js"
+}
