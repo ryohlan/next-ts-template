@@ -1,0 +1,25 @@
+{
+  "short_name": "next-ts-template",
+  "name": "next-ts-template",
+  "icons": [
+    {
+      "src": "/static/manifest/launcher-icon.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "/static/manifest/launcher-icon@2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/static/manifest/launcher-icon@4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/?launcher=true",
+  "background_color": "#FFF",
+  "theme_color": "#111",
+  "display": "standalone"
+}

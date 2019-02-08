@@ -102,19 +102,19 @@ function createNewLayout() {
 }
 
 function addRoutes(name: string, page: string, pattern: string) {
-  console.group('creat new pattern')
+  console.group('creat new routes')
   if (!!pathPattern.patterns.find((p: any) => p.name === name)) {
     console.error(`ERROR. routes\'name \"${name}\" already exists.`)
     process.exit()
   }
-  const newPattern = {
+  const newRoute = {
     name,
     page,
     pattern: `/${pattern}`
   }
-  pathPattern.patterns.push(newPattern)
+  pathPattern.patterns.push(newRoute)
 
-  console.log('pattern: ', newPattern)
+  console.log('pattern: ', newRoute)
   fs.writeFileSync(
     path.resolve(__dirname, '../router/pattern.json'),
     JSON.stringify(pathPattern, null, '\t'),
@@ -122,6 +122,10 @@ function addRoutes(name: string, page: string, pattern: string) {
   )
   console.groupEnd()
 }
+
+checkDir(PAGE_ROOT_PATH)
+checkDir(CONTROLLER_ROOT_PATH)
+checkDir(LAYOUT_ROOT_PATH)
 
 createNewPage()
 createNewController()
