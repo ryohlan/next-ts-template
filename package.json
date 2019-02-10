@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "rm -rf ./node_modules/.cache dist && nodemon",
-    "add:page": "ts-node cli/generate_new_page.ts"
+    "new:page": "ts-node cli/generate_new_page.ts"
   },
   "keywords": [],
   "author": "",
