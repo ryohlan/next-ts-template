@@ -124,7 +124,7 @@ type Query = {
 ...
 ```
 
-And it provides the route creating function `route/creteRoute`. If you reference `users_show`, import `user_show` function from `creatRoute`. You can invoke route path safely.
+And it provides the route creating function `route/createRoute`. If you reference `users_show`, import `user_show` function from `creatRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
 
 ```js
 
