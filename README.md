@@ -12,7 +12,7 @@ This is a template for Next.js. This. template includes followings:
 
 ## What is the Cli?
 
-This project serves a cli for creating new page. For example, if you want to add a new page named profile, run `npm run add:page profile` commands:
+This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run add:page profile` commands:
 
 ```shell
 npm run add:page profile
@@ -123,6 +123,22 @@ type Query = {
 }
 ...
 ```
+
+And it provides the route creating function `route/creteRoute`. If you reference `users_show`, import `user_show` function from `creatRoute`. You can invoke route path safely.
+
+```js
+
+export const users_show = ({user_id}: {
+  user_id: string
+}) =>
+    `/users/${user_id}`
+
+
+// For example...
+<Link route={users_show({ user_id: user.id })}>
+...
+```
+
 
 Also multiple query parameters are ok.
 
