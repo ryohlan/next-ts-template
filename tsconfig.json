@@ -66,6 +66,8 @@
       "@layouts/*": ["./layouts/*"],
       "@controllers/*": ["./controllers/*"],
       "@locale": ["./locale"],
+      "@router": ["./router"],
+      "@router/*": ["./router/*"],
       "*": ["*"]
     },
     "resolveJsonModule": true
