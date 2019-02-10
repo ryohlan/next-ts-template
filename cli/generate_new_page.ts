@@ -115,11 +115,13 @@ function addRoutes(pathStr: string, pattern: string) {
     process.exit()
   }
   const newRoute = {
-    name,
-    page: pathStr.replace('.tsx', ''),
+    page: `/${pathStr.replace(/(\.tsx|\/index)/g, '')}`,
     pattern: `/${pattern}`
   }
   pathPattern.patterns.push(newRoute)
+  ;(pathPattern.patterns as Array<{ pattern: string }>).sort((a, b) =>
+    b.pattern.localeCompare(a.pattern)
+  )
 
   console.log('pattern: ', newRoute)
   fs.writeFileSync(
@@ -131,12 +133,17 @@ function addRoutes(pathStr: string, pattern: string) {
   fs.appendFileSync(
     path.resolve(__dirname, '../router/createRoute.ts'),
     `
-export const ${name} = ({${queries.join(', ')}}: ${queryTypeStr}) =>
-    \`/${pattern
-      .split('/')
-      .map(s => (s.startsWith(':') ? `\${${s.slice(1)}\}` : s))
-      .join('/')}\`
-`
+export const ${name} = ({${queries.join(', ')}}: ${queryTypeStr}) =>({
+  as: \`/${pattern
+    .split('/')
+    .map(s => (s.startsWith(':') ? `\${${s.slice(1)}\}` : s))
+    .join('/')}\`,
+  href: \`${newRoute.page}${
+      queries.length > 0
+        ? '?' + queries.map(q => `${q}=\${${q}}`).join('&')
+        : ''
+    }\`
+})`
   )
   console.groupEnd()
 }

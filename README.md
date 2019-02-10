@@ -5,14 +5,14 @@
 This is a template for Next.js. This. template includes followings:
 
 - TypeScript
-- Parametarized routing (by next-routes)
+- Parametarized routing
 - custom server
 - styled-components
 - cli for new page
 
 ## What is the Cli?
 
-This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run add:page profile` commands:
+This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run new:page profile` commands:
 
 ```shell
 npm run add:page profile
@@ -24,10 +24,10 @@ create new controller
 create new layout
   path: /{PROJECT_PATH}/next-ts-template/layouts/profile/index.tsx
 create new routes
-  pattern:  { name: 'profile', page: 'profile/index', pattern: '/profile' }
+  pattern:  { page: 'profile/index', pattern: '/profile' }
 ```
 
-It's command create 3 files and updates 1 file.
+It's command create 3 files and updates 2 file.
 
 ### New Page
 
@@ -50,7 +50,7 @@ A controller needs to process `getInitialProps`. It is a component but it should
 ```js
 import React from 'react'
 import { NextContext } from 'next'
-import { AppProps } from '@src/app'
+import { AppInitialProps, AppProps } from '@src/app'
 import Layout from '@layouts/profile'
 
 interface InitialProps {}
@@ -59,7 +59,7 @@ type Query = {}
 
 const getInitialProps = async ({
 
-}: NextContext<Query> & AppProps): Promise<InitialProps> => {
+}: NextContext<Query> & AppInitialProps): Promise<InitialProps> => {
   return {}
 }
 
@@ -105,7 +105,7 @@ create new controller
 create new layout
   path: /{PROJECT_PATH}/next-ts-template/layouts/users/show.tsx
 create new routes
-  pattern:  { name: 'users_show',
+  pattern:  {
     page: 'users/show',
     pattern: '/users/:user_id' }
 ```
@@ -130,12 +130,13 @@ And it provides the route creating function `route/createRoute`. If you referenc
 
 export const users_show = ({user_id}: {
   user_id: string
-}) =>
-    `/users/${user_id}`
-
+}) => ({
+  as: `/users/${user_id}`,
+  href: `/users/show?user_id=${user_id}`
+})
 
 // For example...
-<Link route={users_show({ user_id: user.id })}>
+<Link {...users_show({ user_id: user.id })}>
 ...
 ```
 
@@ -152,7 +153,7 @@ create new controller
 create new layout
   path: /{PROJECT_PATH}/next-ts-template/layouts/users/items/show.tsx
 create new routes
-  pattern:  { name: 'users_items_show',
+  pattern:  {
     page: 'users/items/show',
     pattern: '/users/:user_id/items/:item_id' }
 ```
