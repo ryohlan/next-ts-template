@@ -13,7 +13,7 @@ const getInitialProps = async ({
   return {}
 }
 
-const Page = ({  }: AppProps & InitialProps) => <Layout />
+const Page = ({  }: AppProps<Query> & InitialProps) => <Layout />
 
 Page.getInitialProps = getInitialProps
 

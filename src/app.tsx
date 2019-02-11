@@ -1,9 +1,12 @@
 import React from 'react'
 import App, { Container, NextAppContext, DefaultAppIProps } from 'next/app'
+import { RouterProps } from 'next/router'
 
 export interface AppInitialProps {}
 
-export interface AppProps extends AppInitialProps {}
+export interface AppProps<Q> extends AppInitialProps {
+  router: RouterProps<Q>
+}
 
 const getInitialProps = async ({
   Component,
@@ -18,7 +21,7 @@ const getInitialProps = async ({
   return { pageProps, ...initialProps }
 }
 
-class MyApp extends App<AppProps> {
+class MyApp extends App<AppProps<any>> {
   static getInitialProps = getInitialProps
 
   render() {
