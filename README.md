@@ -1,5 +1,9 @@
 # Next.js TypeScript project template
 
+## Requirement
+
+node > 10.12.0
+
 ## What is this?
 
 This is a template for Next.js. This. template includes followings:
@@ -47,6 +51,8 @@ What is the Controller? I call that a file includes `getInitialProps`  'controll
 
 A controller needs to process `getInitialProps`. It is a component but it should not have complex logics for the render. It's obligation is just processing `getInitialProps`.
 
+And the props are passed using Context.
+
 ```js
 import React from 'react'
 import { NextContext } from 'next'
@@ -57,13 +63,21 @@ interface InitialProps {}
 
 type Query = {}
 
+type Props = AppProps<Query> & InitialProps
+
+export const context = React.createContext<Props>({} as any)
+
 const getInitialProps = async ({
 
 }: NextContext<Query> & AppInitialProps): Promise<InitialProps> => {
   return {}
 }
 
-const Page = ({  }: AppProps & InitialProps) => <Layout />
+const Page = (props: Props) => (
+  <context.Provider value={props}>
+    <Layout />
+  </context.Provider>
+)
 
 Page.getInitialProps = getInitialProps
 
@@ -74,15 +88,21 @@ export default Page
 
 The layout is just a React comopnent called by the controller.
 
+And the Layout can receive controller's props using context and useContext.
+
+Controller's props are special props. Because only the controller can process the getInitialProps. So, we often need them at a lot of components.
+
+Context API is very suitable and useContext makes it simpler.
+
 ```js
 import React from 'react'
 import styled from 'styled-components'
+import { context } from '@controllers/profile'
 
-interface Props {}
-
-const Layout = ({ }: Props) => (
-  <Wrapper>Hello World from profile</Wrapper>
-)
+const Layout = () => {
+  const {} = useContext(context)
+  return <Wrapper>Hello World from profile</Wrapper>
+}
 
 const Wrapper = styled.div``
 
