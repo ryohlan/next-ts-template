@@ -7,13 +7,21 @@ interface InitialProps {}
 
 type Query = __QUERY_TYPES__
 
+type Props = AppProps<Query> & InitialProps
+
+export const context = React.createContext<Props>({} as any)
+
 const getInitialProps = async ({
 
 }: NextContext<Query> & AppInitialProps): Promise<InitialProps> => {
   return {}
 }
 
-const Page = ({  }: AppProps<Query> & InitialProps) => <Layout />
+const Page = (props: Props) => (
+  <context.Provider value={props}>
+    <Layout />
+  </context.Provider>
+)
 
 Page.getInitialProps = getInitialProps
 
