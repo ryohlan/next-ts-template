@@ -105,7 +105,7 @@ function createNewLayout() {
 }
 
 function addRoutes(pathStr: string, pattern: string) {
-  console.group('create new routes')
+  console.group('update pattern.json')
   const name = pathStr
     .replace(/(\/index|\.tsx)/g, '')
     .split('/')
@@ -130,6 +130,11 @@ function addRoutes(pathStr: string, pattern: string) {
     'utf8'
   )
 
+  console.groupEnd()
+  console.group('update createRoute.ts')
+  console.log(
+    `export const ${name} = ({${queries.join(', ')}}: ${queryTypeStr})`
+  )
   fs.appendFileSync(
     path.resolve(__dirname, '../router/createRoute.ts'),
     `

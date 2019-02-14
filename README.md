@@ -27,8 +27,10 @@ create new controller
   path: /{PROJECT_PATH}/next-ts-template/controllers/profile/index.tsx
 create new layout
   path: /{PROJECT_PATH}/next-ts-template/layouts/profile/index.tsx
-create new routes
-  pattern:  { page: 'profile/index', pattern: '/profile' }
+update pattern.json
+  pattern:  { page: '/profile', pattern: '/profile' }
+update createRoute.ts
+  export const profile = ({}: {}) => ...
 ```
 
 The command creates 3 files and updates 2 file.
