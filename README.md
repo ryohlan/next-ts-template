@@ -31,7 +31,7 @@ create new routes
   pattern:  { page: 'profile/index', pattern: '/profile' }
 ```
 
-It's command create 3 files and updates 2 file.
+The command creates 3 files and updates 2 file.
 
 ### New Page
 
