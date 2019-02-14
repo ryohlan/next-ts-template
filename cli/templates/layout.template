@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { context } from '@controllers/__PATH__'
 
-const Layout = () => {
-  const {} = useContext(context)
+interface Props {}
+
+const Layout = ({}: Props) => {
   return <Wrapper>Hello World from __PATH__</Wrapper>
 }
 

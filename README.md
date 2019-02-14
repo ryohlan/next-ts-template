@@ -19,14 +19,14 @@ This is a template for Next.js. This. template includes followings:
 This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run new:page profile` commands:
 
 ```shell
-npm run add:page profile
+npm run new:page profile
 
 create new page
-  path: /{PROJECT_PATH}/next-ts-template/pages/profile/index.tsx
+  path: /next-ts-template/pages/profile/index.tsx
 create new controller
-  path: /{PROJECT_PATH}/next-ts-template/controllers/profile/index.tsx
+  path: /next-ts-template/controllers/profile/index.tsx
 create new layout
-  path: /{PROJECT_PATH}/next-ts-template/layouts/profile/index.tsx
+  path: /next-ts-template/layouts/profile/index.tsx
 update pattern.json
   pattern:  { page: '/profile', pattern: '/profile' }
 update createRoute.ts
@@ -56,8 +56,6 @@ What is the Controller? I call that a file includes `getInitialProps`  'controll
 
 A controller needs to process `getInitialProps`. It is a component but it should not have complex logics for the render. It's obligation is just processing `getInitialProps`.
 
-And the props are passed using Context.
-
 ```js
 import React from 'react'
 import { NextContext } from 'next'
@@ -70,8 +68,6 @@ type Query = {}
 
 type Props = AppProps<Query> & InitialProps
 
-export const context = React.createContext<Props>({} as any)
-
 const getInitialProps = async ({
 
 }: NextContext<Query> & AppInitialProps): Promise<InitialProps> => {
@@ -79,9 +75,7 @@ const getInitialProps = async ({
 }
 
 const Page = (props: Props) => (
-  <context.Provider value={props}>
-    <Layout />
-  </context.Provider>
+  <Layout {...props} />
 )
 
 Page.getInitialProps = getInitialProps
@@ -93,19 +87,11 @@ export default Page
 
 The layout is just a React component called by the controller.
 
-And the Layout can receive controller's props using context and useContext.
-
-Controller's props are special props. Because only the controller can process the getInitialProps. So, we often need them at a lot of components.
-
-Context API is very suitable and useContext makes it simpler.
-
 ```js
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { context } from '@controllers/profile'
 
 const Layout = () => {
-  const {} = useContext(context)
   return <Wrapper>Hello World from profile</Wrapper>
 }
 
@@ -121,18 +107,23 @@ We often need a Parameterized routing. But Next.js has no smart way. So, we can 
 For example, if you need `/users/:user_id`, you input following argument:
 
 ```shell
-npm run add:page users/:user_id
+npm run new:page users/:user_id
 
 create new page
-  path: /{PROJECT_PATH}/next-ts-template/pages/users/show.tsx
+  path: /next-ts-template/pages/users/show.tsx
 create new controller
-  path: /{PROJECT_PATH}/next-ts-template/controllers/users/show.tsx
+  path: /next-ts-template/controllers/users/show.tsx
 create new layout
-  path: /{PROJECT_PATH}/next-ts-template/layouts/users/show.tsx
-create new routes
-  pattern:  {
-    page: 'users/show',
-    pattern: '/users/:user_id' }
+  path: /next-ts-template/layouts/users/show.tsx
+update pattern.json
+  pattern:  { page: '/users/show', pattern: '/users/:user_id' }
+update createRoute.ts
+  export const users_show = ({user_id}: {
+    user_id: string
+  }) => ({
+      as: `/users/${user_id}`,
+      href: `/users/show?user_id=${user_id}`
+    })
 ```
 
 Then, you can access `/users/1`!
@@ -169,18 +160,25 @@ export const users_show = ({user_id}: {
 Also multiple query parameters are ok.
 
 ```shell
-npm run add:page users/:user_id/items/:item_id
+npm run new:page users/:user_id/items/:item_id
 
 create new page
-  path: /{PROJECT_PATH}/next-ts-template/pages/users/items/show.tsx
+  path: /next-ts-template/pages/users/items/show.tsx
 create new controller
-  path: /{PROJECT_PATH}/next-ts-template/controllers/users/items/show.tsx
+  path: /next-ts-template/controllers/users/items/show.tsx
 create new layout
-  path: /{PROJECT_PATH}/next-ts-template/layouts/users/items/show.tsx
-create new routes
-  pattern:  {
-    page: 'users/items/show',
+  path: /next-ts-template/layouts/users/items/show.tsx
+update pattern.json
+  pattern:  { page: '/users/items/show',
     pattern: '/users/:user_id/items/:item_id' }
+update createRoute.ts
+  export const users_items_show = ({user_id, item_id}: {
+    user_id: string,
+    item_id: string
+  }) => ({
+      as: `/users/${user_id}/items/${item_id}`,
+      href: `/users/items/show?user_id=${user_id}&item_id=${item_id}`
+    })
 ```
 
 ```js
