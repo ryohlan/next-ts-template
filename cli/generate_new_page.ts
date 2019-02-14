@@ -132,23 +132,22 @@ function addRoutes(pathStr: string, pattern: string) {
 
   console.groupEnd()
   console.group('update createRoute.ts')
-  console.log(
-    `export const ${name} = ({${queries.join(', ')}}: ${queryTypeStr})`
-  )
+  const newScrip = `export const ${name} = (${
+    queries.length > 0 ? `{${queries.join(', ')}}: ${queryTypeStr}` : ''
+  }) => ({
+    as: \`/${pattern
+      .split('/')
+      .map(s => (s.startsWith(':') ? `\${${s.slice(1)}\}` : s))
+      .join('/')}\`,
+    href: \`${newRoute.page}${
+    queries.length > 0 ? '?' + queries.map(q => `${q}=\${${q}}`).join('&') : ''
+  }\`
+  })`
+
+  console.log(newScrip)
   fs.appendFileSync(
     path.resolve(__dirname, '../router/createRoute.ts'),
-    `
-export const ${name} = ({${queries.join(', ')}}: ${queryTypeStr}) =>({
-  as: \`/${pattern
-    .split('/')
-    .map(s => (s.startsWith(':') ? `\${${s.slice(1)}\}` : s))
-    .join('/')}\`,
-  href: \`${newRoute.page}${
-      queries.length > 0
-        ? '?' + queries.map(q => `${q}=\${${q}}`).join('&')
-        : ''
-    }\`
-})`
+    newScrip
   )
   console.groupEnd()
 }

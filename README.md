@@ -30,7 +30,10 @@ create new layout
 update pattern.json
   pattern:  { page: '/profile', pattern: '/profile' }
 update createRoute.ts
-  export const profile = ({}: {}) => ...
+  export const profile = () => ({
+      as: `/profile`,
+      href: `/profile`
+    })
 ```
 
 The command creates 3 files and updates 2 file.
