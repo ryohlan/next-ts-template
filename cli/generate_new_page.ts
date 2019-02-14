@@ -3,15 +3,15 @@ const fs = require('fs')
 const pathPattern = require('../router/pattern.json')
 
 const originalPath = process.argv[2].replace(/\/$/, '')
-const splited = originalPath.split('/')
-if (splited[splited.length - 1].startsWith(':')) {
-  splited.push('show.tsx')
+const splitted = originalPath.split('/')
+if (splitted[splitted.length - 1].startsWith(':')) {
+  splitted.push('show.tsx')
 } else {
-  splited.push('index.tsx')
+  splitted.push('index.tsx')
 }
 
-const pathStr = splited.filter(s => !s.startsWith(':')).join('/')
-const queries = splited.filter(s => s.startsWith(':')).map(s => s.slice(1))
+const pathStr = splitted.filter(s => !s.startsWith(':')).join('/')
+const queries = splitted.filter(s => s.startsWith(':')).map(s => s.slice(1))
 
 const queryType: { [key: string]: string } = {}
 for (const q of queries) {

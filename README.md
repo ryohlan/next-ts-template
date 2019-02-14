@@ -9,7 +9,7 @@ node > 10.12.0
 This is a template for Next.js. This. template includes followings:
 
 - TypeScript
-- Parametarized routing
+- Parameterized routing
 - custom server
 - styled-components
 - cli for new page
@@ -86,7 +86,7 @@ export default Page
 
 ### New Layout
 
-The layout is just a React comopnent called by the controller.
+The layout is just a React component called by the controller.
 
 And the Layout can receive controller's props using context and useContext.
 
@@ -95,7 +95,7 @@ Controller's props are special props. Because only the controller can process th
 Context API is very suitable and useContext makes it simpler.
 
 ```js
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { context } from '@controllers/profile'
 
@@ -109,9 +109,9 @@ const Wrapper = styled.div``
 export default Layout
 ```
 
-## Add Parametarized routing
+## Add Parameterized routing
 
-We often need a parametarized routing. But Next.js has no smart way. So, we can create it easily by using cli.
+We often need a Parameterized routing. But Next.js has no smart way. So, we can create it easily by using cli.
 
 For example, if you need `/users/:user_id`, you input following argument:
 
@@ -144,7 +144,7 @@ type Query = {
 ...
 ```
 
-And it provides the route creating function `route/createRoute`. If you reference `users_show`, import `user_show` function from `creatRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
+And it provides the route creating function `route/createRoute`. If you reference `users_show`, import `user_show` function from `createRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
 
 ```js
 
