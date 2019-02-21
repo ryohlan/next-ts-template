@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NextContext } from 'next'
 import { AppInitialProps, AppProps } from '@src/app'
 import Layout from '@layouts/__PATH__'
@@ -7,18 +7,21 @@ interface InitialProps {}
 
 type Query = __QUERY_TYPES__
 
-type Props = AppProps<Query> & InitialProps
-
 const getInitialProps = async ({
 
 }: NextContext<Query> & AppInitialProps): Promise<InitialProps> => {
   return {}
 }
 
-const Page = (props: Props) => (
-  <Layout {...props} />
+const PageContext = React.createContext<AppProps<Query> & InitialProps>({} as any)
+
+const Page = (pageProps: AppProps<Query> & InitialProps) => (
+  <PageContext.Provider value={pageProps}>
+    <Layout />
+  </PageContext.Provider>
 )
 
 Page.getInitialProps = getInitialProps
 
 export default Page
+export const usePageContext = () => useContext(PageContext)
