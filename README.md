@@ -38,7 +38,7 @@ update createRoute.ts
 
 The command creates 3 files and updates 2 file.
 
-### New Page
+### Page
 
 After the cli ran, a file is created under the pages dir.
 
@@ -50,14 +50,16 @@ export { default } from '@controllers/profile'
 
 ```
 
-### New Controller
+### Controller
 
 What is the Controller? I call that a file includes `getInitialProps`  'controller'.
 
 A controller needs to process `getInitialProps`. It is a component but it should not have complex logics for the render. It's obligation is just processing `getInitialProps`.
 
+Since v1.5.0, `PageContext` is added. It provides it's pages's props via React Context API. Components under the page can use them via `usePageContext` hook.
+
 ```js
-import React from 'react'
+import React, { useContext } from 'react'
 import { NextContext } from 'next'
 import { AppInitialProps, AppProps } from '@src/app'
 import Layout from '@layouts/profile'
@@ -74,6 +76,8 @@ const getInitialProps = async ({
   return {}
 }
 
+const PageContext = React.createContext<AppProps<Query> & InitialProps>({} as any)
+
 const Page = (props: Props) => (
   <Layout {...props} />
 )
@@ -81,9 +85,10 @@ const Page = (props: Props) => (
 Page.getInitialProps = getInitialProps
 
 export default Page
+export const usePageContext = () => useContext(PageContext)
 ```
 
-### New Layout
+### Layout
 
 The layout is just a React component called by the controller.
 
