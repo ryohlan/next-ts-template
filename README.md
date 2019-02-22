@@ -52,7 +52,7 @@ export { default } from '@controllers/profile'
 
 ### Controller
 
-What is the Controller? I call that a file includes `getInitialProps`  'controller'.
+What is the Controller? I call that a file includes `getInitialProps`.
 
 A controller needs to process `getInitialProps`. It is a component but it should not have complex logics for the render. It's obligation is just processing `getInitialProps`.
 
@@ -79,7 +79,9 @@ const getInitialProps = async ({
 const PageContext = React.createContext<AppProps<Query> & InitialProps>({} as any)
 
 const Page = (props: Props) => (
-  <Layout {...props} />
+  <PageContext.Provider value={pageProps}>
+    <Layout />
+  </PageContext.Provider>
 )
 
 Page.getInitialProps = getInitialProps
