@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const pathPattern = require('../router/pattern.json')
+const puralize = require('pluralize')
 
 const originalPath = process.argv[2].replace(/\/$/, '')
 
@@ -12,10 +13,19 @@ if (splitted.find(p => !!p.startsWith('_'))) {
   process.exit()
 }
 
+if (splitted.filter(p => p.startsWith(':')).find(p => p !== ':id')) {
+  console.error('ERROR: parameterized routing accepts only :id')
+  process.exit()
+}
+
 const pathStr = splitted
   .map(s => (s.startsWith(':') ? s.replace(':', '_') : s))
   .join('/')
-const queries = splitted.filter(s => s.startsWith(':')).map(s => s.slice(1))
+const queries = splitted
+  .map((s, i, array) =>
+    s.startsWith(':') ? `${puralize.singular(array[i - 1])}_${s.slice(1)}` : ''
+  )
+  .filter(s => s.length > 0)
 
 const queryType: { [key: string]: string } = {}
 for (const q of queries) {
@@ -113,6 +123,7 @@ function addRoutes(pathStr: string, pattern: string) {
   const name = pathStr
     .replace(/(\/index|\.tsx)/g, '')
     .split('/')
+    .map(s => (s.startsWith('_') ? s.slice(1) : s))
     .join('__')
   if (!!pathPattern.patterns.find((p: any) => p.name === name)) {
     console.error(`ERROR. routes\'name \"${name}\" already exists.`)
