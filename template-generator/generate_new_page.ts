@@ -3,14 +3,18 @@ const fs = require('fs')
 const pathPattern = require('../router/pattern.json')
 
 const originalPath = process.argv[2].replace(/\/$/, '')
+
 const splitted = originalPath.split('/')
-if (splitted[splitted.length - 1].startsWith(':')) {
-  splitted.push('show.tsx')
-} else {
-  splitted.push('index.tsx')
+splitted.push('index.tsx')
+
+if (splitted.find(p => !!p.startsWith('_'))) {
+  console.error('ERROR: `_` prefix is not allowed')
+  process.exit()
 }
 
-const pathStr = splitted.filter(s => !s.startsWith(':')).join('/')
+const pathStr = splitted
+  .map(s => (s.startsWith(':') ? s.replace(':', '_') : s))
+  .join('/')
 const queries = splitted.filter(s => s.startsWith(':')).map(s => s.slice(1))
 
 const queryType: { [key: string]: string } = {}
@@ -109,7 +113,7 @@ function addRoutes(pathStr: string, pattern: string) {
   const name = pathStr
     .replace(/(\/index|\.tsx)/g, '')
     .split('/')
-    .join('_')
+    .join('__')
   if (!!pathPattern.patterns.find((p: any) => p.name === name)) {
     console.error(`ERROR. routes\'name \"${name}\" already exists.`)
     process.exit()
@@ -132,7 +136,8 @@ function addRoutes(pathStr: string, pattern: string) {
 
   console.groupEnd()
   console.group('update createRoute.ts')
-  const newScrip = `export const ${name} = (${
+  const newScrip = `
+  export const ${name} = (${
     queries.length > 0 ? `{${queries.join(', ')}}: ${queryTypeStr}` : ''
   }) => ({
     as: \`/${pattern
