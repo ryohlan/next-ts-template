@@ -118,8 +118,17 @@ function createNewLayout() {
   console.groupEnd()
 }
 
-function addRoutes(pathStr: string, pattern: string) {
+function addRoutes() {
   console.group('update pattern.json')
+  const pattern = originalPath
+    .split('/')
+    .map((s, i, array) =>
+      s.startsWith(':')
+        ? `:${puralize.singular(array[i - 1])}_${s.slice(1)}`
+        : s
+    )
+    .join('/')
+
   const name = pathStr
     .replace(/(\/index|\.tsx)/g, '')
     .split('/')
@@ -153,7 +162,7 @@ function addRoutes(pathStr: string, pattern: string) {
   }) => ({
     as: \`/${pattern
       .split('/')
-      .map(s => (s.startsWith(':') ? `\${${s.slice(1)}\}` : s))
+      .map(s => (s.startsWith(':') ? `\${${s.slice(1)}}` : s))
       .join('/')}\`,
     href: \`${newRoute.page}${
     queries.length > 0 ? '?' + queries.map(q => `${q}=\${${q}}`).join('&') : ''
@@ -175,4 +184,4 @@ checkDir(LAYOUT_ROOT_PATH)
 createNewPage()
 createNewController()
 createNewLayout()
-addRoutes(pathStr, originalPath)
+addRoutes()

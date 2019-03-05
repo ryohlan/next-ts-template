@@ -14,7 +14,7 @@ This is a template for Next.js. This. template includes followings:
 - styled-components
 - cli for new page
 
-## What is the Cli?
+## What is this?
 
 This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run new:page profile` commands:
 
@@ -111,25 +111,25 @@ export default Layout
 
 We often need a Parameterized routing. But Next.js has no smart way. So, we can create it easily by using cli.
 
-For example, if you need `/users/:user_id`, you input following argument:
+For example, if you need `/users/:id`, you input following argument:
 
 ```shell
 npm run new:page users/:user_id
 
 create new page
-  path: /next-ts-template/pages/users/show.tsx
+  path: /next-ts-template/pages/users/_id/index.tsx
 create new controller
-  path: /next-ts-template/controllers/users/show.tsx
+  path: /next-ts-template/controllers/users/_id/index.tsx
 create new layout
-  path: /next-ts-template/layouts/users/show.tsx
+  path: /next-ts-template/layouts/users/_id/index.tsx
 update pattern.json
-  pattern:  { page: '/users/show', pattern: '/users/:user_id' }
+  pattern:  { page: '/users/_id', pattern: '/users/:id' }
 update createRoute.ts
-  export const users_show = ({user_id}: {
+  export const users__id = ({user_id}: {
     user_id: string
   }) => ({
       as: `/users/${user_id}`,
-      href: `/users/show?user_id=${user_id}`
+      href: `/users/_id?user_id=${user_id}`
     })
 ```
 
@@ -147,19 +147,19 @@ type Query = {
 ...
 ```
 
-And it provides the route creating function `route/createRoute`. If you reference `users_show`, import `user_show` function from `createRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
+And it provides the route creating function `route/createRoute`. If you reference `users__id`, import `user__id` function from `createRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
 
 ```js
 
-export const users_show = ({user_id}: {
+export const users__id = ({user_id}: {
   user_id: string
 }) => ({
   as: `/users/${user_id}`,
-  href: `/users/show?user_id=${user_id}`
+  href: `/users/_id?user_id=${user_id}`
 })
 
 // For example...
-<Link {...users_show({ user_id: user.id })}>
+<Link {...users__id({ user_id: user.id })}>
 ...
 ```
 
@@ -167,16 +167,16 @@ export const users_show = ({user_id}: {
 Also multiple query parameters are ok.
 
 ```shell
-npm run new:page users/:user_id/items/:item_id
+npm run new:page users/:id/items/:id
 
 create new page
-  path: /next-ts-template/pages/users/items/show.tsx
+  path: /next-ts-template/pages/users/_id/items/_id/index.tsx
 create new controller
-  path: /next-ts-template/controllers/users/items/show.tsx
+  path: /next-ts-template/controllers/users/_id/items/_id/index.tsx
 create new layout
-  path: /next-ts-template/layouts/users/items/show.tsx
+  path: /next-ts-template/layouts/users/_id/items/_id/index.tsx
 update pattern.json
-  pattern:  { page: '/users/items/show',
+  pattern:  { page: '/users/_id/items/_id',
     pattern: '/users/:user_id/items/:item_id' }
 update createRoute.ts
   export const users_items_show = ({user_id, item_id}: {
@@ -184,12 +184,12 @@ update createRoute.ts
     item_id: string
   }) => ({
       as: `/users/${user_id}/items/${item_id}`,
-      href: `/users/items/show?user_id=${user_id}&item_id=${item_id}`
+      href: `/users/_id/items/_id?user_id=${user_id}&item_id=${item_id}`
     })
 ```
 
 ```js
-// users/items/show.tsx
+// users/_id/items/_id.tsx
 
 ...
 
