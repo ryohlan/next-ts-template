@@ -132,8 +132,8 @@ function addRoutes() {
   const name = pathStr
     .replace(/(\/index|\.tsx)/g, '')
     .split('/')
-    .map(s => (s.startsWith('_') ? s.slice(1) : s))
-    .join('__')
+    .map(s => s.replace('_', ''))
+    .join('_')
   if (!!pathPattern.patterns.find((p: any) => p.name === name)) {
     console.error(`ERROR. routes\'name \"${name}\" already exists.`)
     process.exit()

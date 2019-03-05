@@ -147,11 +147,11 @@ type Query = {
 ...
 ```
 
-And it provides the route creating function `route/createRoute`. If you reference `users__id`, import `user__id` function from `createRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
+And it provides the route creating function `route/createRoute`. If you reference `users_id`, import `user_id` function from `createRoute`. It is added automatically at a creating new page, so you can invoke route path safely.
 
 ```js
 
-export const users__id = ({user_id}: {
+export const users_id = ({user_id}: {
   user_id: string
 }) => ({
   as: `/users/${user_id}`,
@@ -159,7 +159,7 @@ export const users__id = ({user_id}: {
 })
 
 // For example...
-<Link {...users__id({ user_id: user.id })}>
+<Link {...users_id({ user_id: user.id })}>
 ...
 ```
 
