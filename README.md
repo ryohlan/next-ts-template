@@ -14,8 +14,6 @@ This is a template for Next.js. This. template includes followings:
 - styled-components
 - cli for new page
 
-## What is this?
-
 This project provides a cli for creating new page. For example, if you want to add a new page named profile, run `npm run new:page profile` commands:
 
 ```shell
