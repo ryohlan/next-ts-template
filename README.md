@@ -112,7 +112,7 @@ We often need a Parameterized routing. But Next.js has no smart way. So, we can 
 For example, if you need `/users/:id`, you input following argument:
 
 ```shell
-npm run new:page users/:user_id
+npm run new:page users/:id
 
 create new page
   path: /next-ts-template/pages/users/_id/index.tsx
