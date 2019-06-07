@@ -200,5 +200,10 @@ type Query = {
 
 ```
 
+# Usage
+In June 6, 2019, Github released the repository templates feature.(https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/)
+This repository is compatible with it.
+Create your repository by clicking 'Use this template' top of the page.
+
 # License
 The MIT License (MIT)
