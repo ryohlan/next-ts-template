@@ -1,3 +1,13 @@
+# Next.js 9 is out!!
+
+This version includes official dynamic routing using file system.
+
+So, you may not need this repository. See this.
+
+https://nextjs.org/blog/next-9#dynamic-route-segments
+
+
+
 # Next.js TypeScript project template
 
 ## Requirement
